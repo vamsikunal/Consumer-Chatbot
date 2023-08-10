@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  rasa_server:
+    container_name: "rasa_server"
+    build: 
+      context: backend
+    ports: 
+      - "5005:5005"
+    depends_on: 
+      - action_server
+    networks:
+      - rasa_network
+
+  action_server:
+    container_name: "action_server"
+    build: 
+      context: actions
+    volumes:
+      - ./actions:/app/actions
+    networks:
+      - rasa_network
+    ports:
+      - "5055:5055"
+
+networks:
+  rasa_network:
+    driver: bridge
